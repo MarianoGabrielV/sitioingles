@@ -1,35 +1,32 @@
 # Sitio Web Clases de Ingles
 
-Este repositorio incluye dos versiones del mismo sitio promocional:
-
-- `react-site/` (React + Vite)
-- `vue-site/` (Vue + Vite)
+Proyecto unificado en React + Vite, listo para deploy en Netlify.
 
 ## Requisitos
 
-- Node.js 18+
-- npm 9+
+- Node.js 18 o superior (recomendado 20)
+- npm 9 o superior
 
-## Ejecutar version React
+## Ejecutar en local
 
 ```bash
-cd react-site
 npm install
 npm run dev
 ```
 
-## Ejecutar version Vue
-
-```bash
-cd vue-site
-npm install
-npm run dev
-```
-
-## Build
-
-En cualquiera de las dos carpetas:
+## Build de produccion
 
 ```bash
 npm run build
 ```
+
+La salida queda en `dist/`.
+
+## Deploy en Netlify
+
+Este repo ya incluye `netlify.toml`:
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+Si conectas el repo en Netlify, tomara esa configuracion automaticamente.

@@ -1,15 +1,19 @@
 {
-  "name": "ingles-sites-workspace",
+  "name": "sitioingles",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "npm run dev:react",
-    "install:react": "npm --prefix react-site install",
-    "install:vue": "npm --prefix vue-site install",
-    "install:all": "npm run install:react && npm run install:vue",
-    "dev:react": "npm --prefix react-site run dev",
-    "dev:vue": "npm --prefix vue-site run dev",
-    "build:react": "npm --prefix react-site run build",
-    "build:vue": "npm --prefix vue-site run build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.9"
   }
 }
