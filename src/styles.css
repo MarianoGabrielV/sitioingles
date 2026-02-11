@@ -1,10 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap");
 
 :root {
-  --text: #1c2430;
-  --primary: #ff6b35;
-  --secondary: #00a8a8;
-  --accent: #ffe8da;
+  --text: #1e2430;
+  --primary: #0b6d79;
+  --secondary: #1da7b8;
+  --utn-blue: #214e86;
+  --utn-green: #a8c814;
+  --accent: #eef4f7;
+  --surface: #ffffff;
+  --shadow-soft: 0 10px 24px rgba(15, 34, 58, 0.12);
+  --shadow-card: 0 6px 18px rgba(15, 34, 58, 0.1);
+  --ring-glow: 0 0 0 3px rgba(29, 167, 184, 0.2);
 }
 
 * {
@@ -14,7 +20,7 @@
 body {
   margin: 0;
   font-family: "Nunito", "Segoe UI", sans-serif;
-  background: linear-gradient(160deg, #fff8ef 0%, #fdf3ff 100%);
+  background: linear-gradient(180deg, #f4f6f8 0%, #eef4f7 100%);
   color: var(--text);
 }
 
@@ -25,9 +31,9 @@ body {
 
 .hero {
   background:
-    radial-gradient(circle at 10% 20%, #ffc53d 0%, transparent 26%),
-    radial-gradient(circle at 90% 10%, #7ae7ff 0%, transparent 24%),
-    linear-gradient(120deg, #ff6b35 0%, #ff914d 40%, #ff3f8e 100%);
+    radial-gradient(circle at 12% 18%, #a8c81445 0%, transparent 34%),
+    radial-gradient(circle at 88% 12%, #22c6d84d 0%, transparent 32%),
+    linear-gradient(130deg, #0b6d79 0%, #1b6f98 45%, #214e86 100%);
   color: #fff;
   padding-bottom: 4rem;
 }
@@ -50,9 +56,25 @@ body {
 
 .brand-logo {
   width: clamp(74px, 9vw, 102px);
+  aspect-ratio: 1 / 1;
   height: auto;
+  display: grid;
+  place-items: center;
   flex-shrink: 0;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 3px solid #ffffffd1;
+  background: #fff;
   filter: drop-shadow(0 5px 16px #0000003d);
+}
+
+.brand-logo-fallback {
+  font-family: "Montserrat", "Nunito", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #0f6d79;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #d9f4f7 55%, #b6e7ee 100%);
 }
 
 .brand-text {
@@ -67,10 +89,18 @@ body {
 .nav-cta {
   color: #fff;
   text-decoration: none;
-  border: 1px solid #ffffffb3;
+  border: 1px solid #ffffff99;
   padding: 0.6rem 1rem;
   border-radius: 999px;
   font-weight: 600;
+  backdrop-filter: blur(2px);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-cta:hover {
+  transform: translateY(-1px);
+  border-color: #ffffffd9;
+  box-shadow: 0 8px 20px rgba(11, 109, 121, 0.25);
 }
 
 .hero-content {
@@ -91,13 +121,14 @@ body {
   object-fit: cover;
   border-radius: 16px;
   border: 2px solid #ffffff66;
+  box-shadow: var(--shadow-card);
 }
 
 .badge {
   display: inline-block;
   margin: 0;
-  background: #ffffff2e;
-  border: 1px solid #ffffff5c;
+  background: #ffffff29;
+  border: 1px solid #ffffff66;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -128,20 +159,48 @@ h1 {
   padding: 0.8rem 1.2rem;
   border-radius: 12px;
   font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .btn-primary {
-  background: #12223a;
+  background: linear-gradient(135deg, #0b6d79 0%, #1da7b8 55%, #214e86 100%);
   color: #fff;
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-secondary {
-  background: #fff;
-  color: #12223a;
+  background: #ffffff;
+  color: #12314f;
+  border: 1px solid #c9d6df;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .section {
   padding: 4rem 0;
+}
+
+.section-stats {
+  background:
+    radial-gradient(circle at 12% 18%, #a8c81426 0%, transparent 34%),
+    radial-gradient(circle at 88% 12%, #22c6d82e 0%, transparent 32%),
+    linear-gradient(130deg, #0b6d79d9 0%, #1b6f98d4 45%, #214e86cf 100%);
+}
+
+.section-stats .stat-label {
+  color: #e7f4ff;
+}
+
+.section-stats .stat-value {
+  color: #d7ee6b;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
 }
 
 h2 {
@@ -156,6 +215,37 @@ h2 {
   font-size: 1.05rem;
 }
 
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  text-align: center;
+  align-items: center;
+}
+
+.stat-card {
+  padding: 0.45rem 0.6rem;
+}
+
+.stat-value {
+  margin: 0.2rem 0 0;
+  font-family: "Montserrat", "Nunito", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #0f5d73;
+}
+
+.stat-label {
+  margin: 0;
+  color: #334156;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.86rem;
+}
+
 .cards,
 .pricing {
   display: grid;
@@ -168,11 +258,13 @@ h2 {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(165deg, #ffffff 0%, #fff7f1 100%);
-  border: 1px solid #ffd8c6;
+  background:
+    radial-gradient(circle at 110% -10%, #1da7b81f 0%, transparent 40%),
+    linear-gradient(165deg, #ffffff 0%, #f8fbfc 100%);
+  border: 1px solid #d7e6ec;
   border-radius: 18px;
   padding: 1.25rem;
-  box-shadow: 0 12px 24px #0f1f3417;
+  box-shadow: var(--shadow-card);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
@@ -185,7 +277,7 @@ h2 {
   top: 0.55rem;
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #ff6b35, #ff3f8e, #6a5acd);
+  background: linear-gradient(90deg, #0b6d79, #1da7b8, #214e86);
   opacity: 0.95;
 }
 
@@ -196,15 +288,15 @@ h2 {
   inset: auto -20% -42% auto;
   width: 170px;
   height: 170px;
-  background: radial-gradient(circle, #ff6b352b 0%, transparent 70%);
+  background: radial-gradient(circle, #1da7b824 0%, transparent 70%);
   z-index: -1;
 }
 
 .card:hover,
 .price-card:hover {
   transform: translateY(-6px);
-  border-color: #ff9a74;
-  box-shadow: 0 18px 38px #0f1f3429;
+  border-color: #9ec0ce;
+  box-shadow: 0 16px 34px rgba(15, 34, 58, 0.18);
 }
 
 .card h3,
@@ -225,19 +317,92 @@ h2 {
 }
 
 .cards .card:nth-child(2)::before {
-  background: linear-gradient(90deg, #00a8a8, #39b7e7, #5677fc);
+  background: linear-gradient(90deg, #1da7b8, #0b6d79, #214e86);
 }
 
 .cards .card:nth-child(3)::before {
-  background: linear-gradient(90deg, #ff8c42, #ff5d8f, #8f4bff);
+  background: linear-gradient(90deg, #214e86, #1da7b8, #a8c814);
 }
 
 .cards .card:nth-child(4)::before {
-  background: linear-gradient(90deg, #00b894, #00a8a8, #2d7ff9);
+  background: linear-gradient(90deg, #a8c814, #1da7b8, #0b6d79);
 }
 
 .section-accent {
   background: var(--accent);
+}
+
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 33%);
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.6rem;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel-track::-webkit-scrollbar {
+  height: 10px;
+}
+
+.carousel-track::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #0b6d79, #1da7b8, #214e86);
+  border-radius: 999px;
+}
+
+.carousel-card {
+  scroll-snap-align: start;
+  background:
+    radial-gradient(circle at 110% -12%, #1da7b824 0%, transparent 40%),
+    var(--surface);
+  border-radius: 18px;
+  border: 1px solid #d7e6ec;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carousel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(15, 34, 58, 0.16);
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-content {
+  padding: 1rem 1rem 1.1rem;
+}
+
+.carousel-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: linear-gradient(90deg, #0b6d79, #1da7b8, #214e86);
+}
+
+.carousel-content h4 {
+  margin: 0.7rem 0 0.45rem;
+  font-family: "Montserrat", "Nunito", sans-serif;
+  font-size: 1.08rem;
+  color: #1a2b48;
+}
+
+.carousel-content p {
+  margin: 0;
+  color: #3b4c63;
+  line-height: 1.45;
 }
 
 .contact-box {
@@ -282,9 +447,20 @@ h2 {
   box-shadow: 0 8px 16px #00000024;
 }
 
+.contact-box a:focus-visible,
+.btn:focus-visible,
+.nav-cta:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-glow), var(--shadow-soft);
+}
+
 @media (max-width: 640px) {
   .contact-box {
     flex-direction: column;
+  }
+
+  .carousel-track {
+    grid-auto-columns: minmax(260px, 88%);
   }
 
   .contact-box a {
@@ -298,11 +474,11 @@ h2 {
 }
 
 .contact-whatsapp {
-  background: #20b25a;
+  background: linear-gradient(135deg, #0b6d79 0%, #1da7b8 100%);
 }
 
 .contact-instagram {
-  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+  background: linear-gradient(135deg, #214e86 0%, #0b6d79 65%, #a8c814 100%);
 }
 
 .contact-icon {

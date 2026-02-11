@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 const benefits = [
   {
     title: "Ingles para todos los niveles",
@@ -17,54 +19,115 @@ const benefits = [
   }
 ];
 
-const highlights = [
-  "Instituto virtual de ingles con modalidad flexible.",
-  "Convenio institucional con la Universidad Tecnologica Nacional (UTN).",
-  "Certificados con validez nacional."
+const stats = [
+  { value: 980, label: "Alumnos egresados", suffix: "+" },
+  { value: 420, label: "Titulos obtenidos", suffix: "+" },
+  { value: 260, label: "Estudiantes actuales", suffix: "+" }
 ];
 
+const carouselItems = [
+  {
+    title: "Convenio Academico con UTN",
+    text: "Articulacion institucional para potenciar la formacion docente y profesional.",
+    image: "/utn-convenio.jpg",
+    badge: "Convenios"
+  },
+  {
+    title: "Workshops de Speaking",
+    text: "Practicas guiadas para entrevistas, reuniones y presentaciones en ingles.",
+    image:
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+    badge: "Actividades"
+  },
+  {
+    title: "Aulas Virtuales Interactivas",
+    text: "Clases en vivo, material digital y seguimiento semanal con docentes.",
+    image:
+      "https://images.unsplash.com/photo-1584697964403-27922a9a1f8a?auto=format&fit=crop&w=1200&q=80",
+    badge: "Metodologia"
+  },
+  {
+    title: "Certificacion por Niveles",
+    text: "Evaluaciones continuas y acreditacion formal de avances.",
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+    badge: "Resultados"
+  }
+];
+
+function CounterCard({ value, label, suffix = "" }) {
+  const ref = useRef(null);
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || started) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry.isIntersecting) return;
+        setStarted(true);
+        observer.disconnect();
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started) return undefined;
+
+    let frameId;
+    const duration = 1500;
+    const start = performance.now();
+
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - progress) * (1 - progress);
+      setCount(Math.round(value * eased));
+      if (progress < 1) frameId = requestAnimationFrame(tick);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, [started, value]);
+
+  return (
+    <article ref={ref} className="stat-card">
+      <p className="stat-value">
+        {count}
+        {suffix}
+      </p>
+      <p className="stat-label">{label}</p>
+    </article>
+  );
+}
+
 export default function App() {
+  const [logoError, setLogoError] = useState(false);
+
   return (
     <div className="page" id="top">
       <header className="hero">
         <nav className="nav container">
           <a className="brand" href="#top" aria-label="TKE Instituto Virtual de Ingles">
-            <svg
-              className="brand-logo"
-              viewBox="0 0 120 120"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="60" cy="60" r="57" fill="none" stroke="#ffffff" strokeWidth="4" />
-              <circle cx="60" cy="60" r="52" fill="none" stroke="#d4dde2" strokeWidth="1.5" />
-              <path
-                d="M24 38 C42 20, 66 20, 84 36"
-                fill="none"
-                stroke="#2ab4bc"
-                strokeWidth="6"
-                strokeLinecap="round"
+            {!logoError ? (
+              <img
+                className="brand-logo"
+                src="/images/logo-tke.jpeg"
+                alt="Logo TKE Ingles"
+                loading="eager"
+                onError={() => setLogoError(true)}
               />
-              <path
-                d="M22 52 C42 34, 70 34, 90 50"
-                fill="none"
-                stroke="#2ab4bc"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M22 66 C44 50, 72 50, 92 64"
-                fill="none"
-                stroke="#2ab4bc"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <text x="67" y="59" textAnchor="middle" fill="#1b6b75" fontWeight="800" fontSize="18">
+            ) : (
+              <span className="brand-logo brand-logo-fallback" aria-hidden="true">
                 TKE
-              </text>
-              <text x="60" y="89" textAnchor="middle" fill="#111827" fontWeight="800" fontSize="16">
-                INGLES
-              </text>
-            </svg>
+              </span>
+            )}
             <span className="brand-text">TKE Instituto Virtual de Ingles</span>
           </a>
           <a className="nav-cta" href="#contacto">
@@ -115,17 +178,36 @@ export default function App() {
           </div>
         </section>
 
-        <section id="instituto" className="section section-accent">
+        <section className="section section-stats" id="estadisticas">
           <div className="container">
-            <h2>Informacion Institucional</h2>
+            <div className="stats-grid">
+              {stats.map((item) => (
+                <CounterCard
+                  key={item.label}
+                  value={item.value}
+                  label={item.label}
+                  suffix={item.suffix}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section section-accent" id="convenios">
+          <div className="container">
+            <h2>Convenios y Actividades</h2>
             <p className="section-text">
-              TKE impulsa una formacion de calidad con respaldo academico y certificacion valida
-              en todo el pais.
+              Espacios academicos y experiencias formativas que complementan la cursada.
             </p>
-            <div className="pricing">
-              {highlights.map((item) => (
-                <article className="price-card" key={item}>
-                  <p>{item}</p>
+            <div className="carousel-track">
+              {carouselItems.map((item) => (
+                <article className="carousel-card" key={item.title}>
+                  <img src={item.image} alt={item.title} loading="lazy" />
+                  <div className="carousel-content">
+                    <span className="carousel-badge">{item.badge}</span>
+                    <h4>{item.title}</h4>
+                    <p>{item.text}</p>
+                  </div>
                 </article>
               ))}
             </div>
