@@ -109,10 +109,40 @@ function CounterCard({ value, label, suffix = "" }) {
 
 export default function App() {
   const [logoError, setLogoError] = useState(false);
+  const heroVideoRef = useRef(null);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+
+    const applyRate = () => {
+      video.playbackRate = 0.72;
+    };
+
+    applyRate();
+    video.addEventListener("loadedmetadata", applyRate);
+    video.addEventListener("canplay", applyRate);
+
+    return () => {
+      video.removeEventListener("loadedmetadata", applyRate);
+      video.removeEventListener("canplay", applyRate);
+    };
+  }, []);
 
   return (
     <div className="page" id="top">
       <header className="hero">
+        <video
+          ref={heroVideoRef}
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src="/video/Clase.mp4" type="video/mp4" />
+        </video>
         <nav className="nav container">
           <a className="brand" href="#top" aria-label="TKE Instituto Virtual de Ingles">
             {!logoError ? (
@@ -151,48 +181,9 @@ export default function App() {
             </a>
           </div>
         </div>
-        <div className="hero-images container">
-          <img
-            src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80"
-            alt="Estudiantes en clase de ingles"
-            loading="lazy"
-          />
-          <img
-            src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=900&q=80"
-            alt="Clase virtual de ingles"
-            loading="lazy"
-          />
-        </div>
       </header>
 
       <main>
-        <section className="section container" id="propuesta">
-          <h2>Propuesta Academica</h2>
-          <div className="cards">
-            {benefits.map((item) => (
-              <article className="card" key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section section-stats" id="estadisticas">
-          <div className="container">
-            <div className="stats-grid">
-              {stats.map((item) => (
-                <CounterCard
-                  key={item.label}
-                  value={item.value}
-                  label={item.label}
-                  suffix={item.suffix}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="section section-accent" id="convenios">
           <div className="container">
             <h2>Convenios y Actividades</h2>
@@ -211,6 +202,33 @@ export default function App() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section section-stats" id="estadisticas">
+          <div className="container">
+            <div className="stats-grid">
+              {stats.map((item) => (
+                <CounterCard
+                  key={item.label}
+                  value={item.value}
+                  label={item.label}
+                  suffix={item.suffix}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section container" id="propuesta">
+          <h2>Propuesta Academica</h2>
+          <div className="cards">
+            {benefits.map((item) => (
+              <article className="card" key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
           </div>
         </section>
 
