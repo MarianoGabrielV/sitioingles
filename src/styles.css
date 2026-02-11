@@ -197,6 +197,17 @@ h1 {
   padding: 4rem 0;
 }
 
+.reveal-section {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 #convenios.section,
 #contacto.section {
   margin-top: 1.1rem;
@@ -538,5 +549,13 @@ h2 {
 
   .nav {
     align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

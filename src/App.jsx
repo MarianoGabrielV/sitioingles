@@ -107,6 +107,38 @@ function CounterCard({ value, label, suffix = "" }) {
   );
 }
 
+function RevealSection({ id, className = "", children }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || visible) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        setVisible(true);
+        observer.disconnect();
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [visible]);
+
+  return (
+    <section
+      ref={ref}
+      id={id}
+      className={`${className} reveal-section${visible ? " is-visible" : ""}`.trim()}
+    >
+      {children}
+    </section>
+  );
+}
+
 export default function App() {
   const [logoError, setLogoError] = useState(false);
   const heroVideoRef = useRef(null);
@@ -184,7 +216,7 @@ export default function App() {
       </header>
 
       <main>
-        <section className="section section-accent" id="convenios">
+        <RevealSection className="section section-accent" id="convenios">
           <div className="container">
             <h2>Convenios y Actividades</h2>
             <p className="section-text">
@@ -203,9 +235,9 @@ export default function App() {
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section section-stats" id="estadisticas">
+        <RevealSection className="section section-stats" id="estadisticas">
           <div className="container">
             <div className="stats-grid">
               {stats.map((item) => (
@@ -218,9 +250,9 @@ export default function App() {
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
 
-        <section className="section container" id="propuesta">
+        <RevealSection className="section container" id="propuesta">
           <h2>Propuesta Academica</h2>
           <div className="cards">
             {benefits.map((item) => (
@@ -230,9 +262,9 @@ export default function App() {
               </article>
             ))}
           </div>
-        </section>
+        </RevealSection>
 
-        <section id="contacto" className="section container">
+        <RevealSection id="contacto" className="section container">
           <h2>Recibi asesoramiento personalizado</h2>
           <p className="section-text">
             Escribinos por WhatsApp o Instagram para conocer niveles, horarios y modalidad de
@@ -265,7 +297,7 @@ export default function App() {
               <span>Instagram: @tke.ingles</span>
             </a>
           </div>
-        </section>
+        </RevealSection>
       </main>
     </div>
   );
