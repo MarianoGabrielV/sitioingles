@@ -2,21 +2,89 @@ import { useEffect, useRef, useState } from "react";
 
 const benefits = [
   {
-    title: "Ingles para todos los niveles",
-    text: "Programas para ninos, adolescentes y adultos con acompanamiento docente en cada etapa."
+    id: "niveles",
+    tag: "General",
+    tags: ["general"],
+    title: "Clases Virtuales y Presenciales para todos los niveles",
+    text: "Trayectos por edades y niveles con seguimiento docente continuo.",
+    detail:
+      "Cursadas flexibles en formato presencial y virtual para ninos, adolescentes y adultos."
   },
   {
-    title: "Ingles para empresas",
-    text: "Capacitacion orientada a equipos de trabajo con foco en comunicacion profesional."
+    id: "ninos",
+    tag: "Ninos",
+    tags: ["ninos"],
+    title: "Ingles Creativo para Ninos de 6 a 8 anos",
+    text: "Aprendizaje del idioma mediante experiencias creativas y artisticas.",
+    detail: "Actividades ludicas, expresion artistica y dinamicas participativas por edad."
   },
   {
-    title: "Cursos de conversacion",
-    text: "Clases dinamicas para mejorar fluidez, pronunciacion y seguridad al hablar."
+    id: "conversacion",
+    tag: "Conversacion",
+    tags: ["conversacion", "adultos"],
+    title: "Cursos de Conversacion en 3 niveles",
+    text: "Basico, Intermedio y Avanzado para desarrollar fluidez y seguridad.",
+    detail:
+      "Practica guiada de speaking con situaciones reales: entrevistas, reuniones y presentaciones."
   },
   {
-    title: "Ingles creativo para ninos",
-    text: "Aprendizaje ludico con actividades pensadas para estimular el idioma desde edades tempranas."
+    id: "adultos",
+    tag: "Adultos",
+    tags: ["adultos"],
+    title: "Especializacion en educacion para Adultos",
+    text: "Metodologia adaptada a ritmos, objetivos y experiencias de adultos.",
+    detail: "Planificacion orientada a metas academicas, laborales y desarrollo personal."
+  },
+  {
+    id: "empresas",
+    tag: "Empresas",
+    tags: ["empresas"],
+    title: "Clases Virtuales y Presenciales para Empresas",
+    text: "Capacitaciones a medida con foco en comunicacion laboral.",
+    detail: "Programas in-company con diagnostico inicial, objetivos y seguimiento por equipo."
+  },
+  {
+    id: "esp",
+    tag: "ESP",
+    tags: ["esp", "empresas"],
+    title: "Ingles para Propositos Especificos (ESP)",
+    text: "Formacion aplicada a Negocios, Turismo, Medicina, Derecho, Ciencia y Tecnologia.",
+    detail: "Contenidos tecnicos por area profesional para mejorar desempeno academico y laboral."
+  },
+  {
+    id: "staff",
+    tag: "Staff",
+    tags: ["certificacion", "general"],
+    title: "Staff academico de excelencia",
+    text: "Docentes con formacion nacional e internacional y experiencia en todos los niveles.",
+    detail: "Equipo docente con enfoque practico, acompanamiento y evaluacion continua."
+  },
+  {
+    id: "inmersivas",
+    tag: "Metodologia",
+    tags: ["general", "ninos", "adultos"],
+    title: "Clases Dinamicas e Inmersivas",
+    text: "Practicas comunicativas activas para incorporar el idioma en contexto real.",
+    detail: "Metodologia activa con trabajo colaborativo, simulaciones y recursos digitales."
+  },
+  {
+    id: "trayectoria",
+    tag: "Trayectoria",
+    tags: ["certificacion", "general"],
+    title: "Mas de 20 anos de experiencia",
+    text: "Trayectoria sostenida en la ensenanza del idioma ingles.",
+    detail: "Historia institucional consolidada con resultados en formacion academica y profesional."
   }
+];
+
+const proposalFilters = [
+  { id: "todos", label: "Todos" },
+  { id: "general", label: "General" },
+  { id: "ninos", label: "Ninos" },
+  { id: "adultos", label: "Adultos" },
+  { id: "empresas", label: "Empresas" },
+  { id: "esp", label: "ESP" },
+  { id: "certificacion", label: "Staff y Trayectoria" }
 ];
 
 const stats = [
@@ -28,30 +96,44 @@ const stats = [
 const carouselItems = [
   {
     title: "Convenio Academico con UTN",
-    text: "Articulacion institucional para potenciar la formacion docente y profesional.",
-    image: "/utn-convenio.jpg",
-    badge: "Convenios"
+    text: "Nuestro instituto esta en convenio con la UTN; las certificaciones son reconocidas nacional e internacionalmente, alineadas al MCER/CEFR y respaldadas por el INSPT. Evalua escuchar, hablar, leer y escribir para fines academicos y profesionales.",
+    image: "/images/utn.jpeg",
+    badge: "Certificacion"
   },
   {
-    title: "Workshops de Speaking",
-    text: "Practicas guiadas para entrevistas, reuniones y presentaciones en ingles.",
+    title: "Conversacion por Niveles",
+    text: "Espacios de speaking en nivel Basico, Intermedio y Avanzado para mejorar fluidez.",
     image:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=1200&q=80",
     badge: "Actividades"
   },
   {
-    title: "Aulas Virtuales Interactivas",
-    text: "Clases en vivo, material digital y seguimiento semanal con docentes.",
+    title: "Modalidad Virtual y Presencial",
+    text: "Cursadas para ninos, adolescentes y adultos segun edad y nivel de avance.",
     image:
-      "https://images.unsplash.com/photo-1584697964403-27922a9a1f8a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80",
     badge: "Metodologia"
   },
   {
-    title: "Certificacion por Niveles",
-    text: "Evaluaciones continuas y acreditacion formal de avances.",
+    title: "Ingles para Empresas y ESP",
+    text: "Programas para equipos y cursos por area: Negocios, Turismo, Medicina, Derecho, Ciencia y Tecnologia.",
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
-    badge: "Resultados"
+    badge: "Especializacion"
+  },
+  {
+    title: "Ingles Creativo para Ninos",
+    text: "Programa para 6 a 8 anos con propuestas artisticas y aprendizaje inmersivo.",
+    image:
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
+    badge: "Infancias"
+  },
+  {
+    title: "Staff y Trayectoria",
+    text: "Equipo academico de excelencia con formacion nacional e internacional y mas de 20 anos de experiencia institucional.",
+    image:
+      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1200&q=80",
+    badge: "Instituto"
   }
 ];
 
@@ -141,7 +223,13 @@ function RevealSection({ id, className = "", children }) {
 
 export default function App() {
   const [logoError, setLogoError] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("todos");
+  const [expandedBenefitId, setExpandedBenefitId] = useState(null);
   const heroVideoRef = useRef(null);
+  const filteredBenefits =
+    activeFilter === "todos"
+      ? benefits
+      : benefits.filter((item) => item.tags.includes(activeFilter));
 
   useEffect(() => {
     const video = heroVideoRef.current;
@@ -254,13 +342,66 @@ export default function App() {
 
         <RevealSection className="section container" id="propuesta">
           <h2>Propuesta Academica</h2>
-          <div className="cards">
-            {benefits.map((item) => (
-              <article className="card" key={item.title}>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
+          <p className="section-text">
+            Filtra por area y hace click en cada propuesta para ver mas detalle.
+          </p>
+          <div className="proposal-filters" role="tablist" aria-label="Filtros de propuestas">
+            {proposalFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                role="tab"
+                aria-selected={activeFilter === filter.id}
+                className={`filter-chip${activeFilter === filter.id ? " is-active" : ""}`}
+                onClick={() => {
+                  setActiveFilter(filter.id);
+                  setExpandedBenefitId(null);
+                }}
+              >
+                {filter.label}
+              </button>
             ))}
+          </div>
+          <div className="cards">
+            {filteredBenefits.map((item, index) => {
+              const isExpanded = expandedBenefitId === item.id;
+              const whatsappMessage = encodeURIComponent(
+                `Hola, quiero informacion sobre: ${item.title}`
+              );
+
+              return (
+                <article
+                  className={`card is-interactive${isExpanded ? " is-expanded" : ""}`}
+                  key={`${activeFilter}-${item.id}`}
+                  style={{ animationDelay: `${index * 60}ms` }}
+                >
+                  <span className="card-tag">{item.tag}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                  <div className={`card-detail${isExpanded ? " is-open" : ""}`}>
+                    <div className="card-detail-inner">
+                      <p>{item.detail}</p>
+                      <a
+                        className="card-cta"
+                        href={`https://wa.me/5491154565382?text=${whatsappMessage}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Consultar este programa
+                      </a>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="card-toggle"
+                    onClick={() => setExpandedBenefitId(isExpanded ? null : item.id)}
+                    aria-expanded={isExpanded}
+                  >
+                    {isExpanded ? "Ver menos" : "Ver mas"}
+                  </button>
+                </article>
+              );
+            })}
           </div>
         </RevealSection>
 
